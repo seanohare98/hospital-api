@@ -1,17 +1,6 @@
 # hospital-api
 REST API for hospital appointment scheduling
 
-Data Model
-Define a set of data models that include:
-•	a way track assign booked appointments
-•	a way to track patients
-•	a way to track doctors
-•	a way to track a doctor's working hours and days
-REST API
-Implement the following functionality:
-•	Find a doctor's working hours
-•	Book an doctor opening
-•	Create and update the list of doctor's working hours
 ==============================================================================
 
 //CREATE a new doctor with POST http://localhost:3000/luma/doctors
