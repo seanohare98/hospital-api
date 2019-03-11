@@ -16,10 +16,10 @@ mongoose.connect(
   function(err, database) {
     if (err) console.log(err);
 
-    db = database;
-    /* db.collection('doctors').drop();
+    /*db = database;
+    db.collection('doctors').drop();
     db.collection('appointments').drop();
-    db.collection('patients').drop(); */
+    db.collection('patients').drop();*/
   }
 );
 
@@ -35,18 +35,65 @@ var Doctor = require('./models/doctor');
 var Appointment = require('./models/appointment');
 var Patient = require('./models/patient');
 
-//check appointment time against doctor's working hours (no check against other appointments)
-function isValidAppointment(doctor, dayOf, start, end) {
+//return day of week given Date.getDay()
+function dayOfWeek(dayIndex) {
+  return ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'][dayIndex];
+}
+
+//check for overlapping time ranges
+function areOverlapping(a_start, a_end, b_start, b_end) {
+  if (b_start < a_start) {
+    return b_end > a_start;
+  } else {
+    return b_start < a_end;
+  }
+}
+
+async function compareAppointments(appIds) {
+  appIds.forEach(function(appComp) {
+    data = await Appointment.findOne({_id: appComp}).exec();
+    console.log(data.day, data.start, data.end);
+    if (data != null) {
+      if (
+        data.day - dayOf == 0 &&
+        areOverlapping(data.start, data.end, start, end)
+      ) 
+      {
+        console.log('REACHED FALSE RETURN');
+        return false;
+      }
+    else
+      {
+      console.log('Null Object Returned');
+      return true;
+     }
+}
+}) 
+}
+
+//check appointment time against doctor's working hours/current appointments
+function isValidAppointment(doctor, dayOf, weekDay, start, end, callback) {
   var doctorObject = doctor.toObject(),
-    isValid = false;
+    isValid = false,
+    appIds = [];
+
+  //build array of appointment IDs to be compared to
+  doctor.appointments.forEach(function(app) {
+    appIds.push(app);
+  });
+
+  //check for conflict with current appointment schedule
+
+  //check for conflict with doctor's working hours
   const hourEntries = Object.entries(doctorObject.hours);
   for (const [day, times] of hourEntries) {
-    if (day == dayOf && times.open < start && times.close > end) {
+    if (day == weekDay && times.open < start && times.close > end) {
       return true;
     }
   }
   return isValid;
 }
+
 //ALTERNATIVE RESPONSE FORMAT
 function getNormalHours(doctor) {
   var returnForm = 'NORMAL WORKING HOURS for Dr. ' + doctor.name + '\n';
@@ -76,20 +123,23 @@ function getNormalHours(doctor) {
 
 //populate database with example models
 /*
+var date1 = new Date(2019, 03, 06),
+  date2 = new Date(2019, 04, 06),
+  date3 = new Date(2019, 01, 06);
 var newApp1 = new Appointment({
-  day: 'mon',
+  day: date1,
   start: 660,
   end: 720
 });
 
 var newApp2 = new Appointment({
-  day: 'wed',
+  day: date2,
   start: 720,
   end: 780
 });
 
 var newApp3 = new Appointment({
-  day: 'thu',
+  day: date3,
   start: 600,
   end: 720
 });
@@ -169,7 +219,7 @@ var router = express.Router(); //instance of express Router
 
 //MIDDLEWARE
 router.use(function(req, res, next) {
-  console.log('Middleware Called');
+  console.log('==Middleware Called==');
   next();
 });
 
@@ -262,15 +312,23 @@ router
 
   //CREATE a new appointment with POST http://localhost:3000/luma/docotrs/:doctor_id/appointments
   .post(function(req, res) {
-    var dayOf = req.body.day,
+    //20XX-XX-XX format for day, months start couting from 0
+    var dayOf = new Date(
+        req.body.day.substring(0, 4),
+        parseInt(req.body.day.substring(5, 7)) - 1,
+        req.body.day.substring(8, 10)
+      ),
       start = req.body.start,
       end = req.body.end;
 
+    var weekDay = dayOfWeek(dayOf.getDay());
+
     Doctor.findById(req.params.doctor_id, function(err, doctor) {
       if (!dayOf || !start || !end) res.send('Enter all properties');
-      if (isValidAppointment(doctor, dayOf, start, end)) {
+
+      if (isValidAppointment(doctor, dayOf, weekDay, start, end)) {
         var appointment = new Appointment({
-          day: req.body.day,
+          day: dayOf,
           start: req.body.start,
           end: req.body.end
         });
@@ -278,17 +336,16 @@ router
         appointment.save(function(err) {
           if (err) res.send(err);
         });
+
         Doctor.findOneAndUpdate(
           { _id: req.params.doctor_id },
           { $push: { appointments: appointment } },
           function(err) {
-            if (err) console.log(err);
+            if (err) res.send(err);
           }
         );
-
         res.send('Successfully Booked Appointment!');
-      }
-      res.send('Failed...appointment times conflict');
+      } else res.send('Failed...appointment times conflict');
     });
   })
 
@@ -309,7 +366,7 @@ router
     Patient.find()
       .lean()
       .exec(function(err, patients) {
-        return res.end(JSON.stringify(patients));
+        return res.send(JSON.stringify(patients));
       });
   })
 
