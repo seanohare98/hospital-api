@@ -49,40 +49,50 @@ function areOverlapping(a_start, a_end, b_start, b_end) {
   }
 }
 
-async function compareAppointments(appIds) {
-  appIds.forEach(function(appComp) {
-    data = await Appointment.findOne({_id: appComp}).exec();
-    console.log(data.day, data.start, data.end);
-    if (data != null) {
-      if (
-        data.day - dayOf == 0 &&
-        areOverlapping(data.start, data.end, start, end)
-      ) 
-      {
-        console.log('REACHED FALSE RETURN');
-        return false;
-      }
-    else
-      {
+function compareAppointments(appFound, dayOf, start, end) {
+  if (appFound != null) {
+    console.log(appFound.day, appFound.start, appFound.end, dayOf, start, end);
+    if (
+      appFound.day - dayOf == 0 &&
+      areOverlapping(appFound.start, appFound.end, start, end)
+    ) {
+      console.log('REACHED FALSE RETURN');
+      return false;
+    } else {
       console.log('Null Object Returned');
       return true;
-     }
+    }
+  }
 }
-}) 
+
+function findApp(id, callback) {
+  Appointment.findOne({ _id: id }, function(err, appObj) {
+    if (err) {
+      return callback(err);
+    } else if (appObj) {
+      return callback(null, appObj);
+    } else {
+      return callback();
+    }
+  });
 }
 
 //check appointment time against doctor's working hours/current appointments
-function isValidAppointment(doctor, dayOf, weekDay, start, end, callback) {
+function isValidAppointment(doctor, dayOf, weekDay, start, end) {
   var doctorObject = doctor.toObject(),
     isValid = false,
     appIds = [];
 
-  //build array of appointment IDs to be compared to
+  //check for conflict with current appointment schedule
   doctor.appointments.forEach(function(app) {
-    appIds.push(app);
+    findApp(app, function(error, appFound) {
+      console.log(appFound);
+      isValid = compareAppointments(appFound, dayOf, start, end);
+      console.log(isValid);
+    });
   });
 
-  //check for conflict with current appointment schedule
+  if (isValid == false) return false;
 
   //check for conflict with doctor's working hours
   const hourEntries = Object.entries(doctorObject.hours);
