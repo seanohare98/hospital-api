@@ -94,7 +94,7 @@ router
 
   //CREATE a new appointment with POST http://localhost:3000/luma/docotrs/:doctor_id/appointments
   .post(function(req, res) {
-    //20XX-XX-XX format for day...months start couting from 0
+    //20XX-XX-XX format for day...months start counting from 0
     var dayOf = new Date(
         req.body.day.substring(0, 4),
         parseInt(req.body.day.substring(5, 7)) - 1,
@@ -108,27 +108,31 @@ router
     Doctor.findById(req.params.doctor_id, function(err, doctor) {
       if (!dayOf || !start || !end) res.send('Enter all properties');
 
-      if (logic.isValidAppointment(doctor, dayOf, weekDay, start, end)) {
-        console.log('APPOINTMENT DEEMED VALID');
-        var appointment = new Appointment({
-          day: dayOf,
-          start: req.body.start,
-          end: req.body.end
-        });
+      logic
+        .isValidAppointment(doctor, dayOf, weekDay, start, end)
+        .then(data => {
+          if (data == true) {
+            console.log('APPOINTMENT DEEMED VALID');
+            var appointment = new Appointment({
+              day: dayOf,
+              start: req.body.start,
+              end: req.body.end
+            });
 
-        appointment.save(function(err) {
-          if (err) res.send(err);
-        });
+            appointment.save(function(err) {
+              if (err) res.send(err);
+            });
 
-        Doctor.findOneAndUpdate(
-          { _id: req.params.doctor_id },
-          { $push: { appointments: appointment } },
-          function(err) {
-            if (err) res.send(err);
-          }
-        );
-        res.send('Successfully Booked Appointment!');
-      } else res.send('Failed...appointment times conflict');
+            Doctor.findOneAndUpdate(
+              { _id: req.params.doctor_id },
+              { $push: { appointments: appointment } },
+              function(err) {
+                if (err) res.send(err);
+              }
+            );
+            res.send('Successfully Booked Appointment!');
+          } else res.send('Failed...appointment times conflict');
+        });
     });
   })
 

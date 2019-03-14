@@ -89,35 +89,39 @@ module.exports = {
     var doctorObject = doctor.toObject(),
       isValid = false;
 
-    //check for conflict with doctor's working hours
-    const hourEntries = Object.entries(doctorObject.hours);
-    for (const [day, times] of hourEntries) {
-      console.log(day, weekDay, times.open, times.close, start, end);
-      if (day == weekDay && times.open < start && times.close > end) {
-        isValid = true;
-      }
-    }
-    console.log('isValid after doctor hours check is: ' + isValid);
-    if (isValid == false) return false;
-    else {
-      //check for conflict with current appointment schedule
-      return this.findApps(ids).then(data => {
-        console.log(data);
-        for (var i = 0; i < data.length; i++) {
-          if (
-            module.exports.compareAppointments(
-              data[i].day,
-              data[i].start,
-              data[i].end,
-              dayOf,
-              start,
-              end
-            ) == false
-          )
-            console.log('REACHED HERE');
+    //check for conflict with current appointment schedule
+    return this.findApps(ids).then(data => {
+      console.log(data);
+      //check for conflict with doctor's working hours
+      const hourEntries = Object.entries(doctorObject.hours);
+      for (const [day, times] of hourEntries) {
+        console.log(day, weekDay, times.open, times.close, start, end);
+        if (day == weekDay && times.open < start && times.close > end) {
+          isValid = true;
         }
-      });
-    }
+      }
+      console.log('isValid after doctor hours check is: ' + isValid);
+      if (isValid == false) return false;
+      else {
+        for (var i = 0; i < data.length; i++) {
+          isValid = module.exports.compareAppointments(
+            data[i].day,
+            data[i].start,
+            data[i].end,
+            dayOf,
+            start,
+            end
+          );
+          if (isValid == false) {
+            console.log('so we return false...');
+            console.log('isValid after appointment hours check is: ' + isValid);
+            return false;
+          }
+        }
+        console.log('isValid after appointment hours check is: ' + isValid);
+        return true;
+      }
+    });
   }
 };
 
