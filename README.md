@@ -1,5 +1,5 @@
 # hospital-api
-REST API for hospital appointment scheduling
+REST API for simulated hospital functionality
 
 ==============================================================================
 
@@ -13,7 +13,7 @@ REST API for hospital appointment scheduling
 
 //DELETE a doctor with DELETE http://localhost:3000/luma/doctors/:doctor_id
 
-//CREATE/book a new appointment with POST http://localhost:3000/luma/docotrs/:doctor_id/appointments
+//CREATE/BOOK a new appointment with POST http://localhost:3000/luma/docotrs/:doctor_id/appointments
 
 //VIEW a doctor's APPOINTMENTS with GET http://localhost:3000/luma/doctors/:doctor_id/appointments
 
@@ -21,3 +21,4 @@ REST API for hospital appointment scheduling
 
 //CREATE a new patient with POST http://localhost:3000/luma/patients
 
+//DELETE a patient with DELETE http://localhost:3000/luma/patients/:patient_id
