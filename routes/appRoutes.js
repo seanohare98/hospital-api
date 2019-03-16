@@ -27,15 +27,10 @@ router
       ),
       start = req.body.start,
       end = req.body.end;
-    console.log(
-      req.body.day.substring(0, 4),
-      parseInt(req.body.day.substring(5, 7)) - 1,
-      req.body.day.substring(8, 10)
-    );
 
-    //Error-Checking before feeding values into appServices functions
+    //error-checking before calling appServices
     if (!dayOf || !start || !end) res.send('Enter all properties');
-    //More Error-Checking
+    //more error-checking
     if (end <= start) res.send("Appointment can't end before it starts!");
 
     var weekDay = appServices.dayOfWeek(dayOf);

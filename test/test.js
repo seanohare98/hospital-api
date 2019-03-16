@@ -44,10 +44,3 @@ describe('compareAppointments', function() {
   });
 });
 //=================================================================
-describe('Appointments', function() {
-  it('All Appontments should have a Date, and 2 Numbers representing start/end time', function() {
-    compareAppointments(testDate1, 610, 660, testDate2, 660, 670).should.equal(
-      true
-    ); //similar test to areOverlapping
-  });
-});

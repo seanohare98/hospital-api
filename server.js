@@ -24,7 +24,7 @@ mongoose.connect(
     db.collection('doctors').drop();
     db.collection('appointments').drop();
     db.collection('patients').drop();
-     */
+    */
   }
 );
 //Config==========================================================

@@ -68,7 +68,7 @@ router
         if (err) res.send(err);
 
         res.json({
-          message: 'Doctor Updated! Hope you entered a name and hours...'
+          message: 'Doctor Updated!'
         });
       });
     });
