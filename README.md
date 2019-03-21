@@ -10,14 +10,14 @@ API Endpoints:
 //DOCTOR ROUTES: CREATE, READ (all or individual), UPDATE, DESTROY
 
 “methods”: [“GET”], “route”: [“/doctors”], 
-“description”: “returns a JSON list of all the doctors (their working hours, appointment ids, and names)”,
+“description”: “returns JSON list of all the doctors (their working hours, appointment ids, and names)”,
 
 “methods”: [“POST”], “route”: [“/doctors”], 
 “description”: “create a new doctor”, 
 “supportedParameters” : { “name” : “String designating the name of the doctor”, “hours”: “Object with format in Doctor schema found in models/doctor.js”},
 
 “methods”: [“GET”], “route”: [“/doctors/:doctor_id”], 
-“description”: “returns a JSON of doctor with matching :doctor_id (their working hours, appointment ids, and name)”,
+“description”: “returns JSON of doctor with matching :doctor_id (their working hours, appointment ids, and name)”,
 
 “methods”: [“PUT”], “route”: [“/doctors/:doctor_id”], 
 “description”: “update a doctor with matching :doctor_id (their working hours, and name)”,
@@ -40,7 +40,7 @@ API Endpoints:
 //PATIENT ROUTES: CREATE, READ, DELETE
 
 “methods”: [“GET”], “route”: [“/patients”], 
-“description”: “returns a JSON list of all the patients (their appointment ids and names)”,
+“description”: “returns JSON list of all the patients (their appointment ids and names)”,
 
 “methods”: [“POST”], “route”: [“/patients”], 
 “description”: “create a new patient”,
