@@ -19,17 +19,17 @@ router
 
   //CREATE a new appointment with POST http://localhost:3000/luma/docotrs/:doctor_id/appointments
   .post(function(req, res) {
-    //YEAR-MONTH-DAY format for date...months count 0-11, so subtract 1 from request input
+    //YEAR-MONTH-DAY format for date
     var dayOf = new Date(
         req.body.day.substring(0, 4),
-        parseInt(req.body.day.substring(5, 7)) - 1,
+        parseInt(req.body.day.substring(5, 7)) - 1, //months count from 0-11, so subtract 1 from input
         req.body.day.substring(8, 10)
       ),
       start = req.body.start,
       end = req.body.end;
 
     //error-checking before calling appServices
-    if (!dayOf || !start || !end) res.send('Enter all properties');
+    if (!dayOf || !start || !end) res.send('Enter all appointment properties!');
     //more error-checking
     if (end <= start) res.send("Appointment can't end before it starts!");
 
@@ -64,8 +64,5 @@ router
         });
     });
   });
-
-//Prefix requests with /luma
-router.use('/luma', router);
 
 module.exports = router;

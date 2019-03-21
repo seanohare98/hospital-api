@@ -12,7 +12,4 @@ router.use(function(req, res, next) {
   next();
 });
 
-//prefix requests with /luma
-router.use('/luma', router);
-
 module.exports = router;

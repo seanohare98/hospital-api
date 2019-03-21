@@ -43,4 +43,3 @@ describe('compareAppointments', function() {
     ); //extension of areOverlapping test
   });
 });
-//=================================================================

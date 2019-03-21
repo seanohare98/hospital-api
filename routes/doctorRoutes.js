@@ -88,7 +88,4 @@ router
     );
   });
 
-//Prefix requests with /luma
-router.use('/luma', router);
-
 module.exports = router;
