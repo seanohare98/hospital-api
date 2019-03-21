@@ -1,13 +1,11 @@
 # hospital-api
 REST API for simulated hospital functionality
 
-==================================================================================
+======================================================================================
 
 API Endpoints:
 
-[{ 
-
-//DOCTOR ROUTES: CREATE, READ (all or individual), UPDATE, DESTROY
+[{ //DOCTOR ROUTES: CREATE, READ (all or individual), UPDATE, DESTROY
 
 “methods”: [“GET”], “route”: [“/doctors”], 
 “description”: “returns JSON list of all the doctors (their working hours, appointment ids, and names)”,
@@ -50,6 +48,8 @@ API Endpoints:
 “description”: “delete a patient with matching :patient_id” 
 }]
 
+======================================================================================
+PLAIN ENGLISH
 
 //CREATE a new doctor with POST http://localhost:3000/doctors
 
