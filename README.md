@@ -47,27 +47,3 @@ API Endpoints:
 “methods”: [“DELETE”], “route”: [“/patients/:patient_id”], 
 “description”: “delete a patient with matching :patient_id” 
 }]
-
-======================================================================================
-PLAIN ENGLISH
-
-//CREATE a new doctor with POST http://localhost:3000/doctors
-
-//VIEW all doctors(names/working hours/appointments) with GET http://localhost:3000/doctors
-
-//VIEW a doctor(name/working hours/appointments) with GET http://localhost:3000/doctors/:doctor_id
-
-//UPDATE a doctor(name/working hours) with PUT http://localhost:3000/doctors/:doctor_id
-
-//DELETE a doctor with DELETE http://localhost:3000/doctors/:doctor_id
-
-//CREATE/BOOK a new appointment with POST http://localhost:3000/docotrs/:doctor_id/appointments
-
-//VIEW a doctor's appointments with GET http://localhost:3000/doctors/:doctor_id/appointments
-
-//VIEW all patients(names/appointments) with GET http://localhost:3000/patients
-
-//CREATE a new patient with POST http://localhost:3000/patients
-
-//DELETE a patient with DELETE http://localhost:3000/patients/:patient_id
-
