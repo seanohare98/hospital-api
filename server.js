@@ -8,7 +8,7 @@ var appRoutes = require('./routes/appRoutes');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var populater = require('./populateDB');
-var mongoDB = 'mongodb://localhost/luma-interview';
+var mongoDB = 'mongodb://localhost/hospital';
 var port = process.env.PORT || 3000;
 mongoose.set('useFindAndModify', false);
 mongoose.connect(

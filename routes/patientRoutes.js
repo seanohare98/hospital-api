@@ -7,7 +7,7 @@ var Patient = require('../models/patient');
 router
   .route('/patients')
 
-  //VIEW ALL patients with GET http://localhost:3000/luma/patients
+  //VIEW ALL patients with GET http://localhost:3000/hospital/patients
   .get(function(req, res) {
     Patient.find()
       .lean()
@@ -16,7 +16,7 @@ router
       });
   })
 
-  //CREATE a new patient with POST http://localhost:3000/luma/patients
+  //CREATE a new patient with POST http://localhost:3000/hospital/patients
   .post(function(req, res) {
     var patient = new Patient();
     patient.name = req.body.name;
@@ -29,7 +29,7 @@ router
     });
   });
 
-//DELETE a patient with DELETE http://localhost:3000/luma/patients/:patient_id
+//DELETE a patient with DELETE http://localhost:3000/hospital/patients/:patient_id
 router.delete('/patients/:patient_id', function(req, res) {
   Patient.remove(
     {
@@ -43,7 +43,7 @@ router.delete('/patients/:patient_id', function(req, res) {
   );
 });
 
-//Prefix requests with /luma
-router.use('/luma', router);
+//Prefix requests with /hospital
+router.use('/hospital', router);
 
 module.exports = router;

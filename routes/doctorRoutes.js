@@ -7,7 +7,7 @@ var Doctor = require('../models/doctor');
 router
   .route('/doctors')
 
-  //VIEW ALL doctors HOURS with GET http://localhost:3000/luma/doctors
+  //VIEW ALL doctors HOURS with GET http://localhost:3000/hospital/doctors
   .get(function(req, res) {
     //Use to call more readable response format
     /*
@@ -29,7 +29,7 @@ router
       });
   })
 
-  //CREATE a new doctor's with POST http://localhost:3000/luma/doctors
+  //CREATE a new doctor's with POST http://localhost:3000/hospital/doctors
   .post(function(req, res) {
     var doctor = new Doctor();
     doctor.name = req.body.name;
@@ -47,7 +47,7 @@ router
 router
   .route('/doctors/:doctor_id')
 
-  //VIEW a doctor's NAME/HOURS/APPOINTMENTS with GET http://localhost:3000/luma/doctors/:doctor_id
+  //VIEW a doctor's NAME/HOURS/APPOINTMENTS with GET http://localhost:3000/hospital/doctors/:doctor_id
   .get(function(req, res) {
     Doctor.findById(req.params.doctor_id, function(err, doctor) {
       if (err) res.send(err);
@@ -56,7 +56,7 @@ router
     });
   })
 
-  //UPDATE a doctor's NAME/HOURS with PUT http://localhost:3000/luma/doctors/:doctor_id
+  //UPDATE a doctor's NAME/HOURS with PUT http://localhost:3000/hospital/doctors/:doctor_id
   .put(function(req, res) {
     Doctor.findById(req.params.doctor_id, function(err, doctor) {
       if (err) res.send(err);
@@ -74,7 +74,7 @@ router
     });
   })
 
-  //DELETE a doctor with DELETE http://localhost:3000/luma/doctors/:doctor_id
+  //DELETE a doctor with DELETE http://localhost:3000/hospital/doctors/:doctor_id
   .delete(function(req, res) {
     Doctor.remove(
       {

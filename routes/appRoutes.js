@@ -8,7 +8,7 @@ var Doctor = require('../models/doctor');
 router
   .route('/doctors/:doctor_id/appointments')
 
-  //VIEW a doctor's APPOINTMENTS with GET http://localhost:3000/luma/doctors/:doctor_id/appointments
+  //VIEW a doctor's APPOINTMENTS with GET http://localhost:3000/hospital/doctors/:doctor_id/appointments
   .get(function(req, res) {
     Doctor.findById(req.params.doctor_id, function(err, doctor) {
       if (err) res.send(err);
@@ -17,7 +17,7 @@ router
     });
   })
 
-  //CREATE a new appointment with POST http://localhost:3000/luma/docotrs/:doctor_id/appointments
+  //CREATE a new appointment with POST http://localhost:3000/hospital/doctors/:doctor_id/appointments
   .post(function(req, res) {
     //YEAR-MONTH-DAY format for date
     var dayOf = new Date(
